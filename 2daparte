@@ -1,0 +1,97 @@
+#include <GL/glut.h>
+#include <cmath> // Para funciones matemáticas
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+void mostrar(void);
+void inicializacion(void);
+
+int main(int argc, char* argv[]) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowPosition(50, 100);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Plano Cartesiano Completo");
+
+    inicializacion();
+    glutDisplayFunc(mostrar);
+    glutMainLoop();
+    return 0;
+}
+
+void mostrar(void) {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Dibujar ejes del plano cartesiano
+    glColor3f(0.0, 0.0, 0.0);  // Negro
+    glBegin(GL_LINES);
+    glVertex2i(400, 0); // Eje Y
+    glVertex2i(400, 600); // Eje Y
+
+    glVertex2i(0, 300); // Eje X
+    glVertex2i(800, 300); // Eje X
+    glEnd();
+
+    // Dibujar figuras en los cuadrantes
+    // Primer Cuadrante (arriba a la derecha)
+    glColor3f(1.0, 1.0, 0.0);  // Amarillo
+    glBegin(GL_LINES);
+    glVertex2i(500, 500); // Punto superior
+    glVertex2i(550, 350); // Línea hacia el vértice derecho inferior
+
+    glVertex2i(550, 350);
+    glVertex2i(300, 400); // Línea hacia el vértice izquierdo
+
+    glVertex2i(300, 400);
+    glVertex2i(600, 400); // Línea hacia el vértice derecho
+
+    glVertex2i(600, 400);
+    glVertex2i(450, 350); // Línea hacia el vértice izquierdo inferior
+
+    glVertex2i(450, 350);
+    glVertex2i(500, 500); // Línea hacia el punto superior para cerrar
+    glEnd();
+
+    // Segundo Cuadrante (arriba a la izquierda)
+    glColor3f(0.0, 1.0, 0.0);  // Verde
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(100, 500); // Punto superior izquierdo
+    glVertex2i(250, 500); // Punto superior derecho
+    glVertex2i(200, 400); // Punto inferior derecho
+    glVertex2i(50, 400);  // Punto inferior izquierdo
+    glEnd();
+
+    // Tercer Cuadrante (abajo a la izquierda)
+    glColor3f(0.0, 0.0, 1.0);  // Azul
+    glBegin(GL_LINE_LOOP);
+
+    float cx = 100.0; // Centro X
+    float cy = 100.0; // Centro Y
+    float radius = 50.0; // Radio del pentágono
+    float angle = 2 * M_PI / 5; // Ángulo entre vértices
+
+    for (int i = 0; i < 5; ++i) {
+        float x = cx + radius * cos(i * angle);
+        float y = cy + radius * sin(i * angle);
+        glVertex2f(x, y);
+    }
+
+    glEnd();
+
+    // Cuarto Cuadrante (abajo a la derecha)
+    glColor3f(1.0, 0.0, 0.0);  // Rojo
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(500, 100); // Punto inferior izquierdo
+    glVertex2i(650, 100); // Punto inferior derecho
+    glVertex2i(600, 200); // Punto superior derecho
+    glVertex2i(450, 200); // Punto superior izquierdo
+    glEnd();
+
+    glFlush();
+}
+
+void inicializacion(void) {
+    glClearColor(1.0, 1.0, 1.0, 0.0);
+    glMatrixMode(GL_PROJECTION);
+    gluOrtho2D(0.0, 800.0, 0.0, 600.0);
+}
